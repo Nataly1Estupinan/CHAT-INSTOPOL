@@ -52,7 +52,7 @@ const createUser = async (req, res = response) => {
 // login 
 const login = async(req, res) => {
 
-    const { email, password, group } = req.body;
+    const { email, password} = req.body;
 
     try {
         // Verificar si existe el email
