@@ -1,3 +1,5 @@
+const { userConnect, userDisconnect } = require('../controllers/sockets');
+const {comprobateJWR} = require('../helpers/jwt');
 
 
 class Sockets {
@@ -11,7 +13,18 @@ class Sockets {
 
     socketEvents() {
         // On connection
-        this.io.on('connection', ( socket ) => {
+        this.io.on('connection', async( socket ) => {
+
+            const [valide, uid] = comprobateJWR(socket.handshake.query['x-token']);
+
+            if (!valide){
+                console.log('socket no identificado');
+                return socket.disconnect();
+            }
+
+            await userConnect(uid);
+            
+            
 
             //Si el token no es válido, desconectar
 
@@ -31,6 +44,9 @@ class Sockets {
             //Marcar en la DB que el usuario se desconectó
 
             //Emitir todos los usuarios conectados
+            socket.on('disconnect',async() => {
+            await userDisconnect(uid);
+            })
             
         
         });
