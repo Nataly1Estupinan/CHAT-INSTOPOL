@@ -1,4 +1,4 @@
-const { userConnect, userDisconnect } = require('../controllers/sockets');
+const { userConnect, userDisconnect, getUsers, saveMessage } = require('../controllers/sockets');
 const {comprobateJWR} = require('../helpers/jwt');
 
 
@@ -23,29 +23,36 @@ class Sockets {
             }
 
             await userConnect(uid);
-            
-            
 
+            // Unir al usuario a una sala de socket.io
+            socket.join(uid); 
+            
             //Si el token no es válido, desconectar
 
 
 
             //Saber cuál usuario está activo mediuante el uid
-            
 
-            //Emitir todos los usuarios conectados
+             //Emitir todos los usuarios conectados
+            this.io.emit('user-list', await getUsers());
 
             //Socket join, uid
 
             //Escuchar cuando el cliente envía un mensaje
-            //mensaje-personal
+            socket.on('personal-message', async (payload) => {
+                const message = await saveMessage(payload);
+                this.io.to(payload.to ).emit('personal-message', message);
+                this.io.to(payload.from ).emit('personal-message', message);
+            });
+            
+
 
             // Disconnect
             //Marcar en la DB que el usuario se desconectó
-
             //Emitir todos los usuarios conectados
             socket.on('disconnect',async() => {
             await userDisconnect(uid);
+            this.io.emit('user-list', await getUsers());
             })
             
         
