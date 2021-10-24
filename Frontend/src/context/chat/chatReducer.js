@@ -15,7 +15,7 @@ export const chatReducer = (state, action) => {
       return {
         uid: "",
         activeChat: null,
-        usuarios: [],
+        users: [],
         messages: [],
       };
 

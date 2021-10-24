@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
-import { ChatContext } from "../context/chat/ChatContext";
 import { fetchConToken, fetchSinToken } from "../helpers/fetch";
+import { ChatContext } from "../context/chat/ChatContext";
 import { types } from "../types/types";
 
 export const AuthContext = createContext();
@@ -78,6 +78,8 @@ export const AuthProvider = ({ children }) => {
 
     const resp = await fetchConToken("login/renew");
     if (resp.ok) {
+      console.log(resp);
+      console.log(resp.ok);
       localStorage.setItem("token", resp.token);
       const { user } = resp;
 
