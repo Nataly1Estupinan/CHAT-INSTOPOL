@@ -1,66 +1,60 @@
-const { userConnect, userDisconnect, getUsers, saveMessage } = require('../controllers/sockets');
-const {comprobateJWR} = require('../helpers/jwt');
-
+const {
+  userConnect,
+  userDisconnect,
+  getUsers,
+  saveMessage,
+} = require("../controllers/sockets");
+const { comprobateJWR } = require("../helpers/jwt");
 
 class Sockets {
+  constructor(io) {
+    this.io = io;
 
-    constructor( io ) {
+    this.socketEvents();
+  }
 
-        this.io = io;
+  socketEvents() {
+    // On connection
+    this.io.on("connection", async (socket) => {
+      const [valide, uid] = comprobateJWR(socket.handshake.query["x-token"]);
 
-        this.socketEvents();
-    }
+      if (!valide) {
+        console.log("socket no identificado");
+        return socket.disconnect();
+      }
 
-    socketEvents() {
-        // On connection
-        this.io.on('connection', async( socket ) => {
+      console.log("cliente conectado");
+      await userConnect(uid);
 
-            const [valide, uid] = comprobateJWR(socket.handshake.query['x-token']);
+      // Unir al usuario a una sala de socket.io
+      socket.join(uid);
 
-            if (!valide){
-                console.log('socket no identificado');
-                return socket.disconnect();
-            }
+      //Si el token no es válido, desconectar
 
-            await userConnect(uid);
+      //Saber cuál usuario está activo mediuante el uid
 
-            // Unir al usuario a una sala de socket.io
-            socket.join(uid); 
-            
-            //Si el token no es válido, desconectar
+      //Emitir todos los usuarios conectados
+      this.io.emit("user-list", await getUsers());
 
+      //Socket join, uid
 
+      //Escuchar cuando el cliente envía un mensaje
+      socket.on("personal-message", async (payload) => {
+        console.log(payload);
+        const message = await saveMessage(payload);
+        this.io.to(payload.to).emit("personal-message", message);
+        this.io.to(payload.from).emit("personal-message", message);
+      });
 
-            //Saber cuál usuario está activo mediuante el uid
-
-             //Emitir todos los usuarios conectados
-            this.io.emit('user-list', await getUsers());
-
-            //Socket join, uid
-
-            //Escuchar cuando el cliente envía un mensaje
-            socket.on('personal-message', async (payload) => {
-                const message = await saveMessage(payload);
-                this.io.to(payload.to ).emit('personal-message', message);
-                this.io.to(payload.from ).emit('personal-message', message);
-            });
-            
-
-
-            // Disconnect
-            //Marcar en la DB que el usuario se desconectó
-            //Emitir todos los usuarios conectados
-            socket.on('disconnect',async() => {
-            await userDisconnect(uid);
-            this.io.emit('user-list', await getUsers());
-            })
-            
-        
-        });
-    }
-
-
+      // Disconnect
+      //Marcar en la DB que el usuario se desconectó
+      //Emitir todos los usuarios conectados
+      socket.on("disconnect", async () => {
+        await userDisconnect(uid);
+        this.io.emit("user-list", await getUsers());
+      });
+    });
+  }
 }
-
 
 module.exports = Sockets;

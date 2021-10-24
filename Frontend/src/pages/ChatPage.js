@@ -1,28 +1,21 @@
-import React from 'react';
-import { ChatSelect } from '../components/ChatSelect';
-import { InboxPeople } from '../components/InboxPeople';
-import { Messages } from '../components/Messages';
+import React, { useContext } from "react";
+import { ChatSelect } from "../components/ChatSelect";
+import { InboxPeople } from "../components/InboxPeople";
+import { Messages } from "../components/Messages";
+import { ChatContext } from "../context/chat/ChatContext";
 
-
-import '../css/chat.css';
+import "../css/chat.css";
 
 export const ChatPage = () => {
-    return (
-        <div className="messaging">
-            <div className="inbox_msg">
+  const { chatState } = useContext(ChatContext);
 
-                <InboxPeople />
+  return (
+    <div className="messaging">
+      <div className="inbox_msg">
+        <InboxPeople />
 
-                {
-                    (!true)
-                        ? <Messages />
-                        : <ChatSelect />
-                }
-                
-
-            </div>
-
-
-        </div>
-    )
-}
+        {chatState.activeChat ? <Messages /> : <ChatSelect />}
+      </div>
+    </div>
+  );
+};
