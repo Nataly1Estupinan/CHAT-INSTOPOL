@@ -24,19 +24,11 @@ export const SendMessage = () => {
     console.log(message);
     setMessage("");
 
-    // TODO: Emitir un evento de sockets para enviar el message
-    // {
-    //     de: // UID del usuario enviando el message
-    //     para: // UID del usuario que recibe el message
-    //     message: // lo que quiero enviar
-    // }
     socket.emit("personal-message", {
       from: auth.uid,
       to: chatState.activeChat,
       message,
     });
-
-    // TODO: hacer el dispatch de el message...
   };
 
   return (
@@ -46,7 +38,7 @@ export const SendMessage = () => {
           <input
             type="text"
             className="write_msg"
-            placeholder="message..."
+            placeholder="Escribe tu mensaje..."
             value={message}
             onChange={onChange}
           />

@@ -42,7 +42,7 @@ export const SidebarChatItem = ({ user }) => {
           />
         </div>
         <div className="chat_ib">
-          <h5> {user.name} </h5>
+          <h5 style={{ fontWeight: "500" }}> {user.name} </h5>
           {user.online ? (
             <span className="text-success">Online</span>
           ) : (
