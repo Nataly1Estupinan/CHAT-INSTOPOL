@@ -18,7 +18,7 @@ router.post('/new',[
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('email', 'El email es obligatorio').isEmail(),
     check('password', 'El password es obligatorio').not().isEmpty(),
-    // check('group', 'El grupo es obligatorio').not().isEmpty(),
+    check('position', 'El cargo es obligatorio').not().isEmpty(),
     validationCamps
 ], createUser);
 
@@ -27,7 +27,7 @@ router.post('/new',[
 router.post('/', [
     check('email', 'El email es obligatorio').isEmail(),
     check('password', 'El password es obligatorio').not().isEmpty(),
-    // check('group', 'El grupo es obligatorio').not().isEmpty(),
+    
     validationCamps
     
 ], login );
