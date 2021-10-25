@@ -9,9 +9,10 @@ export const RegisterPage = () => {
   const { register } = useContext(AuthContext);
 
   const [form, setForm] = useState({
-    email: "test6@test.com",
-    password: "123456",
-    name: "Susana Paz",
+    email: "test20@test.com",
+    password: "123",
+    name: "Inés Tornudo",
+    position: "CEO",
   });
 
   const onChange = ({ target }) => {
@@ -25,8 +26,8 @@ export const RegisterPage = () => {
   const onSubmit = async (ev) => {
     ev.preventDefault();
 
-    const { email, password, name } = form;
-    const msg = await register(name, email, password);
+    const { email, password, name, position } = form;
+    const msg = await register(name, email, password, position);
 
     if (msg !== true) {
       Swal.fire("Error", msg, "error");
@@ -36,7 +37,8 @@ export const RegisterPage = () => {
   const todoOk = () => {
     return form.email.length > 0 &&
       form.password.length > 0 &&
-      form.name.length > 0
+      form.name.length > 0 &&
+      form.position.length > 0
       ? true
       : false;
   };
@@ -56,6 +58,18 @@ export const RegisterPage = () => {
           name="name"
           placeholder="Nombre"
           value={form.name}
+          onChange={onChange}
+        />
+        <span className="focus-input100"></span>
+      </div>
+
+      <div className="wrap-input100 validate-input mb-3">
+        <input
+          className="input100"
+          type="text"
+          name="position"
+          placeholder="Cargo"
+          value={form.position}
           onChange={onChange}
         />
         <span className="focus-input100"></span>

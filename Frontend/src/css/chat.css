@@ -271,10 +271,11 @@ textarea {
   }
 
   .chat_people {
-    width: 70px;
+    width: 90px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: left;
   }
 
   .chat_img {
@@ -286,6 +287,7 @@ textarea {
   .chat_list {
     padding: 15px;
     height: 150px;
+    border: none;
   }
 
   .msg_history {

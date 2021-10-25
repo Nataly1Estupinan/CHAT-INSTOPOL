@@ -11,6 +11,7 @@ const initialState = {
   logged: false,
   name: null,
   email: null,
+  position: null,
 };
 
 export const AuthProvider = ({ children }) => {
@@ -30,16 +31,17 @@ export const AuthProvider = ({ children }) => {
         logged: true,
         name: user.name,
         email: user.email,
+        position: user.position,
       });
     }
 
     return resp.ok;
   };
 
-  const register = async (name, email, password) => {
+  const register = async (name, email, password, position) => {
     const resp = await fetchSinToken(
       "login/new",
-      { name, email, password },
+      { name, email, password, position },
       "POST"
     );
 
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }) => {
         logged: true,
         name: user.name,
         email: user.email,
+        position: user.position,
       });
 
       return true;
@@ -71,6 +74,7 @@ export const AuthProvider = ({ children }) => {
         logged: false,
         name: null,
         email: null,
+        position: null,
       });
 
       return false;
@@ -79,7 +83,6 @@ export const AuthProvider = ({ children }) => {
     const resp = await fetchConToken("login/renew");
     if (resp.ok) {
       console.log(resp);
-      console.log(resp.ok);
       localStorage.setItem("token", resp.token);
       const { user } = resp;
 
@@ -89,6 +92,7 @@ export const AuthProvider = ({ children }) => {
         logged: true,
         name: user.name,
         email: user.email,
+        position: user.position,
       });
 
       return true;
@@ -99,6 +103,7 @@ export const AuthProvider = ({ children }) => {
         logged: false,
         name: null,
         email: null,
+        position: null,
       });
 
       return false;
