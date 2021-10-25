@@ -18,6 +18,7 @@ const { validationCamps } = require("../middlewares/validation-camps");
 const router = Router();
 
 // Crear nuevos usuarios
+
 router.post(
   "/new",
   [
@@ -42,6 +43,7 @@ router.post(
   ],
   login
 );
+
 
 //Revalidar token
 router.get("/renew", validateJWT, renewToken);
