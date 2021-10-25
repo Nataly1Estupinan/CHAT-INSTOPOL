@@ -11,9 +11,13 @@ export const Searchbox = () => {
       </div>
       <div className="srch_bar">
         <div className="stylish-input-group">
-          <button className="btn text-danger" onClick={logout}>
-            Salir
-          </button>
+          <box-icon
+            onClick={logout}
+            name="exit"
+            type="solid"
+            color="#ffffff"
+            style={{ cursor: "pointer" }}
+          ></box-icon>
         </div>
       </div>
     </div>
