@@ -1,6 +1,6 @@
 # LiveChat Instopol
 
-_Proyecto colaborativo de chat empresarial para INSTOPOL desarrollado con React, NodeJs, ExpressJs y MongoDB, para la empresa INSTOPOL.
+_Proyecto colaborativo de chat empresarial desarrollado con React, NodeJs, ExpressJs y MongoDB.
 
 ## Deploy
 
